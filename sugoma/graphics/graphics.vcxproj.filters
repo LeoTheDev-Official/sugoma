@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="buffers">
+      <UniqueIdentifier>{B2DFE593-1EBF-642F-27D7-EF059335CB90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mesh">
+      <UniqueIdentifier>{B2919A7C-9EC8-9B0D-47B5-811033CB170F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pipeline">
+      <UniqueIdentifier>{1BCFC577-079C-2083-30B5-0E2B1CE15511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer">
+      <UniqueIdentifier>{9C6AA017-8837-FB22-B150-E9CA9D7C30B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures">
+      <UniqueIdentifier>{C9F8A108-B5C5-FC13-DEDE-EABBCA0A32A2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\buffers\buffer.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffers\framebuffer.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffers\index_buffer.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffers\shader_storage_buffer.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffers\uniform_buffer.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffers\vertex_array_object.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buffers\vertex_buffer.h">
+      <Filter>buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics_module.h" />
+    <ClInclude Include="src\mesh\mesh.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesh\vertex.h">
+      <Filter>mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pipeline\compute_pipeline.h">
+      <Filter>pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pipeline\graphics_pipeline.h">
+      <Filter>pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pipeline\pipeline.h">
+      <Filter>pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pipeline\render_pass.h">
+      <Filter>pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\camera.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\renderer.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\renderer_2d.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sugoma_gl.h" />
+    <ClInclude Include="src\textures\sprite_sheet.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\texture.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\texture1D.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\texture2D.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\texture3D.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\texture_cube.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\buffers\buffer.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffers\framebuffer.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffers\index_buffer.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffers\shader_storage_buffer.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffers\uniform_buffer.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffers\vertex_array_object.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buffers\vertex_buffer.cpp">
+      <Filter>buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics_module.cpp" />
+    <ClCompile Include="src\mesh\mesh.cpp">
+      <Filter>mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\compute_pipeline.cpp">
+      <Filter>pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\graphics_pipeline.cpp">
+      <Filter>pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\pipeline.cpp">
+      <Filter>pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\render_pass.cpp">
+      <Filter>pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\camera.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\renderer.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\renderer_2d.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sugoma_gl.cpp" />
+    <ClCompile Include="src\textures\sprite_sheet.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\texture.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\texture1D.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\texture2D.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\texture3D.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\texture_cube.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window.cpp" />
+  </ItemGroup>
+</Project>

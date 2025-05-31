@@ -1,0 +1,115 @@
+#pragma once
+#include <cstdint>
+#include <string>
+namespace sugoma::graphics 
+{
+	using GLHandle = uint32_t;
+	using GLEnum = uint32_t;
+	enum TextureFormat : uint32_t
+	{
+		RED = 0x1903,
+		RG = 0x8227,
+		RGB = 0x1907,
+		BGR = 0x80E0,
+		RGBA = 0x1908,
+		BGRA = 0x80E1,
+		DEPTH_COMPONENT = 0x1902,
+		DEPTH_STENCIL = 0x84F9,
+		STENCIL_INDEX = 0x1901,
+		LUMINANCE = 0x1909,
+		LUMINANCE_ALPHA = 0x190A,
+		R8 = 0x8229,
+		R16 = 0x822A,
+		RG8 = 0x822B,
+		RG16 = 0x822C,
+		R16F = 0x822D,
+		R32F = 0x822E,
+		RG16F = 0x822F,
+		RG32F = 0x8230,
+		R8I = 0x8231,
+		R8UI = 0x8232,
+		R16I = 0x8233,
+		R16UI = 0x8234,
+		R32I = 0x8235,
+		R32UI = 0x8236,
+		RG8I = 0x8237,
+		RG8UI = 0x8238,
+		RG16I = 0x8239,
+		RG16UI = 0x823A,
+		RG32I = 0x823B,
+		RG32UI = 0x823C,
+		RGB8 = 0x8051,
+		RGB16 = 0x8054,
+		RGB16F = 0x881B,
+		RGB32F = 0x8815,
+		RGB8I = 0x8D8F,
+		RGB8UI = 0x8D7D,
+		RGB16I = 0x8D89,
+		RGB16UI = 0x8D77,
+		RGB32I = 0x8D83,
+		RGB32UI = 0x8D71,
+		RGBA8 = 0x8058,
+		RGBA16 = 0x805B,
+		RGBA16F = 0x881A,
+		RGBA32F = 0x8814,
+		RGBA8I = 0x8D8E,
+		RGBA8UI = 0x8D7C,
+		RGBA16I = 0x8D88,
+		RGBA16UI = 0x8D76,
+		RGBA32I = 0x8D82,
+		RGBA32UI = 0x8D70,
+		SRGB = 0x8C40,
+		SRGBA = 0x8C42,
+		SRGB8 = 0x8C41,
+		SRGBA8 = 0x8C43
+	};
+	enum TextureFormatComponent
+	{
+		UNSIGNED_BYTE = 0x1401,
+		BYTE = 0x1400,
+		UNSIGNED_SHORT = 0x1403,
+		SHORT = 0x1402,
+		UNSIGNED_INT = 0x1405,
+		INT = 0x1404,
+		FLOAT = 0x1406,
+		DOUBLE = 0x140A,
+		HALF_FLOAT = 0x140B,
+		UNSIGNED_BYTE_3_3_2 = 0x8032,
+		UNSIGNED_BYTE_2_3_3_REV = 0x8362,
+		UNSIGNED_SHORT_5_6_5 = 0x8363,
+		UNSIGNED_SHORT_5_6_5_REV = 0x8364,
+		UNSIGNED_SHORT_4_4_4_4 = 0x8033,
+		UNSIGNED_SHORT_4_4_4_4_REV = 0x8365,
+		UNSIGNED_SHORT_5_5_5_1 = 0x8034,
+		UNSIGNED_SHORT_1_5_5_5_REV = 0x8366,
+		UNSIGNED_INT_8_8_8_8 = 0x8035,
+		UNSIGNED_INT_8_8_8_8_REV = 0x8367,
+		UNSIGNED_INT_10_10_10_2 = 0x8036,
+		UNSIGNED_INT_2_10_10_10_REV = 0x8368
+	};
+	enum TextureFilter
+	{
+		NEAREST = 0x2600,
+		LINEAR = 0x2601,
+		NEAREST_MIPMAP_NEAREST = 0x2700,
+		LINEAR_MIPMAP_NEAREST = 0x2701,
+		NEAREST_MIPMAP_LINEAR = 0x2702,
+		LINEAR_MIPMAP_LINEAR = 0x2703
+	};
+
+	enum TextureWrapMode
+	{
+		REPEAT = 0x2901,
+		MIRRORED_REPEAT = 0x8370,
+		CLAMP_TO_EDGE = 0x812F,
+		CLAMP_TO_BORDER = 0x812D
+	};
+
+	class GLUtility 
+	{
+	public:
+		static GLHandle CompileShader(const std::string& src, GLEnum kind);
+		static bool LinkProgram(GLHandle handle);
+	};
+	
+}

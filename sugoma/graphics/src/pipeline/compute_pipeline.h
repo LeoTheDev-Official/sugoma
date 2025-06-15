@@ -18,6 +18,8 @@ namespace sugoma::graphics
 		~ComputePipeline();
 		void Invalidate() override;
 		const glm::uvec3& GroupSize() const;
+
+		static Ref<ComputePipeline> Create(const PipelineCreateInfo& info);
 	private:
 		glm::uvec3 m_groupSize;
 	};

@@ -87,7 +87,6 @@ namespace sugoma::graphics
         UIntSampler1DArray = 0x8DD6, // GL_UNSIGNED_INT_SAMPLER_1D_ARRAY
         UIntSampler2DArray = 0x8DD7, // GL_UNSIGNED_INT_SAMPLER_2D_ARRAY
 
-        // Image types (for compute shaders, SSBOs, etc.)
         Image1D = 0x904C,
         Image2D = 0x904D,
         Image3D = 0x904E,
@@ -128,6 +127,12 @@ namespace sugoma::graphics
 
 		ComputeStageBit = (1 << 4)
 	};
+    enum class PipelineKind 
+    {
+        UNKNOWN,
+		Graphics,
+		Compute
+    };
 	struct PipelineStageCreateInfo 
 	{
 		PipelineStageFlagBits stage;
@@ -154,23 +159,33 @@ namespace sugoma::graphics
 	};
 	struct PipelineCreateInfo 
 	{
+        const char* pipelineName = "";
 		std::vector<PipelineStageCreateInfo> stages;
 	};
 	class Pipeline : public Resource 
 	{
 	public:
 		Pipeline() = delete;
-		virtual ~Pipeline() {};
+		virtual ~Pipeline();
 		GLHandle Handle() const;
 
-        const std::unordered_map < std::string, PipelineParameterInfo>& Parameters() const;
-
+        const std::unordered_map<std::string, PipelineParameterInfo>& Parameters() const;
+		const std::string& PipelineName() const { return m_pipelineName; }
+		inline PipelineKind Kind() const { return m_kind; } 
 	protected:
-		Pipeline(const PipelineCreateInfo& info) {};
+		Pipeline(const PipelineCreateInfo& info);
         virtual void Invalidate();
 	protected:
 		std::vector<PipelineStage*> m_stages;
         std::unordered_map<std::string, PipelineParameterInfo> m_params;
 		GLHandle m_handle = 0;
+		std::string m_pipelineName;
+        PipelineKind m_kind = PipelineKind::UNKNOWN;
 	};
+    class PipelineLibrary 
+    {
+    public:
+        static Ref<Pipeline> GetPipeline(const std::string& name);
+		static void RegisterPipeline(Ref<Pipeline> pipeline);
+    };
 }

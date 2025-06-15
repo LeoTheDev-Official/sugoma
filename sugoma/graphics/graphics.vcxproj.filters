@@ -13,6 +13,9 @@
     <Filter Include="renderer">
       <UniqueIdentifier>{9C6AA017-8837-FB22-B150-E9CA9D7C30B1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{1C21B11B-08C3-DBF1-F17D-EF45DDBE6242}</UniqueIdentifier>
+    </Filter>
     <Filter Include="textures">
       <UniqueIdentifier>{C9F8A108-B5C5-FC13-DEDE-EABBCA0A32A2}</UniqueIdentifier>
     </Filter>
@@ -61,11 +64,38 @@
     <ClInclude Include="src\renderer\camera.h">
       <Filter>renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\material.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\renderer\renderer.h">
       <Filter>renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\renderer_2d.h">
       <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\decl.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\sbuffer.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\shader.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\shader_types.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\struct.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\test_shader.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\transfer.h">
+      <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ubuffer.h">
+      <Filter>shader</Filter>
     </ClInclude>
     <ClInclude Include="src\sugoma_gl.h" />
     <ClInclude Include="src\textures\sprite_sheet.h">
@@ -87,6 +117,7 @@
       <Filter>textures</Filter>
     </ClInclude>
     <ClInclude Include="src\window.h" />
+    <ClInclude Include="src\shader\material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\buffers\buffer.cpp">
@@ -129,11 +160,20 @@
     <ClCompile Include="src\renderer\camera.cpp">
       <Filter>renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\material.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\renderer\renderer.cpp">
       <Filter>renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\renderer_2d.cpp">
       <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\decl.cpp">
+      <Filter>shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\shader.cpp">
+      <Filter>shader</Filter>
     </ClCompile>
     <ClCompile Include="src\sugoma_gl.cpp" />
     <ClCompile Include="src\textures\sprite_sheet.cpp">

@@ -262,11 +262,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\core\core.vcxproj">
-      <Project>{4E40957C-3A77-960D-E363-7C10CF79120F}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="src\audio_clip.h" />
     <ClInclude Include="src\audio_engine.h" />
     <ClInclude Include="src\audio_mixer.h" />
@@ -279,6 +274,11 @@
     <ClCompile Include="src\audio_mixer.cpp" />
     <ClCompile Include="src\audio_module.cpp" />
     <ClCompile Include="src\audio_source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\core\core.vcxproj">
+      <Project>{4E40957C-3A77-960D-E363-7C10CF79120F}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,8 +6,15 @@ namespace sugoma::graphics
 {
 	GLHandle PipelineStage::Handle() const { return m_handle; }
 	PipelineStage::~PipelineStage() { if (m_handle) glDeleteShader(m_handle); }
+	Pipeline::~Pipeline()
+	{
+
+	}
 	GLHandle Pipeline::Handle() const { return m_handle; }
 	const std::unordered_map<std::string, PipelineParameterInfo>& Pipeline::Parameters() const { return m_params; }
+	Pipeline::Pipeline(const PipelineCreateInfo& info) : m_pipelineName(info.pipelineName)
+	{
+	}
 	void Pipeline::Invalidate()
 	{
 		m_params.clear();
@@ -32,5 +39,18 @@ namespace sugoma::graphics
 
 			m_params[param.name] = param;
 		}
+	}
+	static std::unordered_map<std::string, Ref<Pipeline>> s_pipelineLibrary;
+	Ref<Pipeline> PipelineLibrary::GetPipeline(const std::string& name)
+	{
+		auto it = s_pipelineLibrary.find(name);
+		if (it == s_pipelineLibrary.end()) return 0;
+		return it->second;
+	}
+	void PipelineLibrary::RegisterPipeline(Ref<Pipeline> pipeline)
+	{
+		auto it = s_pipelineLibrary.find(pipeline->PipelineName());
+		if (it != s_pipelineLibrary.end()) return;
+		s_pipelineLibrary[pipeline->PipelineName()] = pipeline;
 	}
 }

@@ -1,5 +1,6 @@
 #include "app_module.h"
 
+/*
 #include "utility/guid.h"
 #include "debug/logger.h"
 
@@ -110,3 +111,34 @@ void AppModule::Tick()
 	if (InputSystem::GetKeyDown(KeyCode::Space))
 		active_texture = textures[++tex_index % (sizeof(textures) / sizeof(textures[0]))];
 }
+*/
+#include "shader/test_shader.h"
+using namespace sugoma::graphics;
+AppModule::AppModule() : Module("AppModule") {}
+
+AppModule::~AppModule()
+{
+
+}
+
+void AppModule::OnAttach()
+{
+	Ref<Shader> shader = Resources::Create<TestShader>();
+	Shader* s = shader.get();
+}
+
+void AppModule::OnDetach()
+{
+
+}
+
+bool AppModule::Validate()
+{
+	return true;
+}
+
+void AppModule::Tick()
+{
+
+}
+

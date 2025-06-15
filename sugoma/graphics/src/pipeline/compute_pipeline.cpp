@@ -14,6 +14,7 @@ namespace sugoma::graphics
 	ComputePipeline::ComputePipeline(const PipelineCreateInfo& info):
 		Pipeline(info)
 	{
+		m_kind = PipelineKind::Compute;
 		for (auto& stageInfo : info.stages)
 			if (stageInfo.stage & PipelineStageFlagBits::ComputeStageBit)
 				m_stages.push_back(new ComputeStage(stageInfo));
@@ -38,4 +39,10 @@ namespace sugoma::graphics
 		m_groupSize = { workGroupSize[0], workGroupSize[1], workGroupSize[2] };
 	}
 	const glm::uvec3& ComputePipeline::GroupSize() const { return m_groupSize; }
+	Ref<ComputePipeline> ComputePipeline::Create(const PipelineCreateInfo& info)
+	{
+		auto ref = Resources::Create<ComputePipeline>(info);
+		if (info.pipelineName != "") PipelineLibrary::RegisterPipeline(ref);
+		return ref;
+	}
 }

@@ -30,6 +30,9 @@
     <ClInclude Include="src\assets\asset_pack.h">
       <Filter>assets</Filter>
     </ClInclude>
+    <ClInclude Include="src\assets\types\audio_clip_asset.h">
+      <Filter>assets\types</Filter>
+    </ClInclude>
     <ClInclude Include="src\assets\types\mesh_asset.h">
       <Filter>assets\types</Filter>
     </ClInclude>
@@ -54,11 +57,12 @@
     <ClInclude Include="src\tools\asset_packer.h">
       <Filter>tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\tools\audio_debug.h">
+      <Filter>tools</Filter>
+    </ClInclude>
     <ClInclude Include="src\utility\saf_utility.h">
       <Filter>utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\tools\audio_debug.h" />
-    <ClInclude Include="src\assets\types\audio_clip_asset.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\assets\asset.cpp">
@@ -66,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="src\assets\asset_pack.cpp">
       <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\assets\types\audio_clip_asset.cpp">
+      <Filter>assets\types</Filter>
     </ClCompile>
     <ClCompile Include="src\assets\types\mesh_asset.cpp">
       <Filter>assets\types</Filter>
@@ -91,10 +98,11 @@
     <ClCompile Include="src\tools\asset_packer.cpp">
       <Filter>tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\tools\audio_debug.cpp">
+      <Filter>tools</Filter>
+    </ClCompile>
     <ClCompile Include="src\utility\saf_utility.cpp">
       <Filter>utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\tools\audio_debug.cpp" />
-    <ClCompile Include="src\assets\types\audio_clip_asset.cpp" />
   </ItemGroup>
 </Project>

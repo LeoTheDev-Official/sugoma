@@ -46,8 +46,9 @@ namespace sugoma::graphics
 
 	}
 
-	GraphicsPipeline::GraphicsPipeline(const PipelineCreateInfo& info) : Pipeline(info)
+	GraphicsPipeline::GraphicsPipeline(const PipelineCreateInfo& info, const std::vector<std::string>& publicParams) : Pipeline(info)
 	{
+		m_kind = PipelineKind::Graphics;
 		PipelineStageFlagBits flags = (PipelineStageFlagBits)0;
 		for (auto& stage : info.stages) 
 		{
@@ -89,6 +90,17 @@ namespace sugoma::graphics
 		for (auto& stage : m_stages)
 			stage->Invalidate(m_handle);
 		Pipeline::Invalidate(); //fetch pipeline parameters
+		m_publicParams.clear();
+		for (auto& param : m_params)
+			if (param.second.name.find("mat_") == 0)
+				m_publicParams.push_back({ .name = param.second.name.substr(4), .internalName = param.second.name});
+	}
+
+	Ref<GraphicsPipeline> GraphicsPipeline::Create(const PipelineCreateInfo& info, const std::vector<std::string>& publicParams)
+	{
+		auto ref = Resources::Create<GraphicsPipeline>(info, publicParams);
+		if(info.pipelineName != "") PipelineLibrary::RegisterPipeline(ref);
+		return ref;
 	}
 
 }

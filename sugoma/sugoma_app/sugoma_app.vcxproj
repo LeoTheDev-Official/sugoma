@@ -269,9 +269,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\app_module.h" />
+    <ClInclude Include="src\debug\fps_camera_controller.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app_module.cpp" />
+    <ClCompile Include="src\debug\fps_camera_controller.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

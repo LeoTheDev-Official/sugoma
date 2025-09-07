@@ -91,18 +91,20 @@ namespace sugoma::graphics
 	struct RenderPassCreateInfo 
 	{
 		RenderPassState state;
-		const FramebufferSpecification* pFbSpec;
-		const char* pDebugName;
+		const FramebufferSpecification* fbSpec;
+		const char* debugName;
 	};
 	class Framebuffer;
 	class RenderPass 
 	{
 	public:
-		RenderPass() = delete;
+		RenderPass() = default;
 		RenderPass(const RenderPassCreateInfo& createInfo);
 
 		void BeginRenderPass(Framebuffer* framebuffer);
 		void EndRenderPass();
+		
+		RenderPassState& State();
 
 	protected:
 		void SetupDrawBuffers(Framebuffer* target);

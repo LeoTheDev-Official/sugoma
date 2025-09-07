@@ -127,6 +127,7 @@ namespace sugoma::graphics
 
 		ComputeStageBit = (1 << 4)
 	};
+	using PipelineStageFlags = uint8_t;
     enum class PipelineKind 
     {
         UNKNOWN,
@@ -137,6 +138,7 @@ namespace sugoma::graphics
 	{
 		PipelineStageFlagBits stage;
 		std::string source;
+		std::vector<std::string_view> defines;
 	};
     struct PipelineParameterInfo
     {
@@ -161,6 +163,7 @@ namespace sugoma::graphics
 	{
         const char* pipelineName = "";
 		std::vector<PipelineStageCreateInfo> stages;
+		std::vector<std::string_view> defines;
 	};
 	class Pipeline : public Resource 
 	{

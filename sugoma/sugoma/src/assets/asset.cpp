@@ -43,7 +43,7 @@ namespace sugoma
     {
         auto it = s_loaded_assets.find(id);
         if (it != s_loaded_assets.end()) return it->second;
-        return Asset{};
+        return Asset{}; //TODO : fix this
     }
     Ref<Resource> Assets::GetAssetResourceByGUID(GUID id)
     {

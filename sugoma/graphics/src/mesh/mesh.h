@@ -20,7 +20,7 @@ namespace sugoma::graphics
 	{
 	public:
 		Mesh() = delete;
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, bool dynamic, const std::vector<Submesh>& submeshes = {});
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, bool dynamic, const std::vector<Submesh>& submeshes = {}, bool recalculateTangents = false);
 		~Mesh();
 		void Update();
 		std::vector<Vertex> vertices;
@@ -36,7 +36,12 @@ namespace sugoma::graphics
 		const Submesh& GetSubmesh(uint32_t index) const;
 		const std::vector<Submesh>& GetSubmeshes() const;
 
+		void RecalculateNormals();
+		void RecalculateTangents();
+
 		void AddSubmesh(const Submesh& submesh);
+
+		static Ref<Mesh> Create(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, bool dynamic, const std::vector<Submesh>& submeshes = {}, bool recalculateTangents = false);
 	private:
 		VertexBuffer* m_vbo;
 		IndexBuffer* m_ibo;
@@ -49,5 +54,6 @@ namespace sugoma::graphics
 	public:
 		static const Ref<Mesh> Quad();
 		static const Ref<Mesh> Plane();
+		static const Ref<Mesh> Cube();
 	};
 }

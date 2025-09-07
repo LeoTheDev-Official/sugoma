@@ -1,13 +1,24 @@
 #include "sugoma_gl.h"
 #include <GL/glew.h>
+#include <format>
 #include "debug/logger.h"
 namespace sugoma::graphics
 {
-    GLHandle GLUtility::CompileShader(const std::string& src, GLEnum kind)
+	std::string gen_define_source(const std::vector<std::string_view>& defines) 
 	{
+		std::string src;
+		for (auto& def : defines) src += std::format("#define {}", def) + '\n';
+		return src;
+	}
+
+	GLHandle GLUtility::CompileShader(const std::string& src, GLEnum kind, const std::vector<std::string_view>& defines, const char* version)
+	{
+		std::string version_def = std::format("#version {}\n", version);
+		std::string def_src = gen_define_source(defines);
+
 		GLHandle shader = glCreateShader(kind);
-		const char* source = src.c_str();
-		glShaderSource(shader, 1, &source, nullptr);
+		const char* sources[] = { version_def.c_str(), def_src.c_str(), src.c_str() };
+		glShaderSource(shader, sizeof(sources) / sizeof(sources[0]), sources, nullptr);
 		glCompileShader(shader);
 
 		GLint compile_status;

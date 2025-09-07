@@ -9,6 +9,7 @@ namespace sugoma::graphics
 		UniformBuffer() = delete;
 		UniformBuffer(size_t size, BufferUsage usage, uint32_t bind_point);
 		~UniformBuffer();
+		static Ref<UniformBuffer> Create(size_t size, BufferUsage usage, uint32_t bind_point);
 		uint32_t BindPoint() const;
 		void Use(uint32_t bind);
 	protected:

@@ -5,9 +5,9 @@
 
 namespace sugoma::graphics 
 {
-	RenderPass::RenderPass(const RenderPassCreateInfo& createInfo) : m_state(createInfo.state), m_name(createInfo.pDebugName) 
+	RenderPass::RenderPass(const RenderPassCreateInfo& createInfo) : m_state(createInfo.state), m_name(createInfo.debugName) 
 	{
-		const FramebufferSpecification* spec = createInfo.pFbSpec;
+		const FramebufferSpecification* spec = createInfo.fbSpec;
 		m_drawBuffers.resize(spec->attachments.size());
 		uint32_t ci = 0;
 		for (size_t i = 0; i < m_drawBuffers.size(); ++i) 
@@ -33,12 +33,13 @@ namespace sugoma::graphics
 	{
 
 	}
+	RenderPassState& RenderPass::State() { return m_state; }
 	void RenderPass::SetupDrawBuffers(Framebuffer* target)
 	{
 		const auto attachments = target->Attachments();
 		std::vector<GLEnum> buffers(attachments.size());
 		uint32_t ci = 0;
-		for (size_t i = 0; i < attachments.size(); ++i) {
+		for (size_t i = 0; i < m_drawBuffers.size(); ++i) {
 			int32_t b = m_drawBuffers[i];
 			if (b != -1) buffers[b] = GL_COLOR_ATTACHMENT0 + b;
 		}

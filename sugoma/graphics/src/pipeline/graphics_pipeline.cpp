@@ -30,7 +30,7 @@ namespace sugoma::graphics
 
 	VertexStage::VertexStage(const PipelineStageCreateInfo& info) : PipelineStage(info)
 	{
-		m_handle = GLUtility::CompileShader(info.source, GL_VERTEX_SHADER);
+		m_handle = GLUtility::CompileShader(info.source, GL_VERTEX_SHADER, info.defines);
 	}
 	void VertexStage::Invalidate(GLHandle program)
 	{
@@ -38,20 +38,30 @@ namespace sugoma::graphics
 	}
 	FragmentStage::FragmentStage(const PipelineStageCreateInfo& info) : PipelineStage(info)
 	{
-		m_handle = GLUtility::CompileShader(info.source, GL_FRAGMENT_SHADER);
+		m_handle = GLUtility::CompileShader(info.source, GL_FRAGMENT_SHADER, info.defines);
 	}
 
 	void FragmentStage::Invalidate(GLHandle program)
 	{
 
 	}
+	GeometryStage::GeometryStage(const PipelineStageCreateInfo& info) : PipelineStage(info)
+	{
+		m_handle = GLUtility::CompileShader(info.source, GL_GEOMETRY_SHADER, info.defines);
+	}
 
+	void GeometryStage::Invalidate(GLHandle program)
+	{
+
+	}
 	GraphicsPipeline::GraphicsPipeline(const PipelineCreateInfo& info, const std::vector<std::string>& publicParams) : Pipeline(info)
 	{
 		m_kind = PipelineKind::Graphics;
 		PipelineStageFlagBits flags = (PipelineStageFlagBits)0;
-		for (auto& stage : info.stages) 
+		for (auto& s : info.stages) 
 		{
+			PipelineStageCreateInfo stage = s;
+			stage.defines.insert(stage.defines.end(), info.defines.begin(), info.defines.end());
 			if (flags & stage.stage) 
 			{
 				sugoma_error("Multiple graphics pipeline stage infos assigned to the same stage. Stage : " << stage.stage);
@@ -63,8 +73,10 @@ namespace sugoma::graphics
 				m_stages.push_back(new VertexStage(stage));
 				break;
 			case GeometryStageBit:
+				m_stages.push_back(new GeometryStage(stage));
 				break;
 			case TesselationStageBit:
+				sugoma_error("Tesselation stage not implemented.");
 				break;
 			case FragmentStageBit:
 				m_stages.push_back(new FragmentStage(stage));
@@ -90,10 +102,6 @@ namespace sugoma::graphics
 		for (auto& stage : m_stages)
 			stage->Invalidate(m_handle);
 		Pipeline::Invalidate(); //fetch pipeline parameters
-		m_publicParams.clear();
-		for (auto& param : m_params)
-			if (param.second.name.find("mat_") == 0)
-				m_publicParams.push_back({ .name = param.second.name.substr(4), .internalName = param.second.name});
 	}
 
 	Ref<GraphicsPipeline> GraphicsPipeline::Create(const PipelineCreateInfo& info, const std::vector<std::string>& publicParams)

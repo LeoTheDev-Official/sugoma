@@ -32,7 +32,8 @@ namespace sugoma::graphics
 			info.magFilter = att.magFilter;
 			info.minFilter = att.minFilter;
 			GLEnum binding = colorAtt;
-			Texture* texture = nullptr;
+			TextureFormat format = TextureFormat::RGBA;
+			Ref<Texture> texture = 0;
 			switch (att.attachmentType)
 			{
 			case FramebufferAttachmentType::Color:
@@ -40,33 +41,36 @@ namespace sugoma::graphics
 				break;
 			case FramebufferAttachmentType::Depth:
 				binding = GL_DEPTH_ATTACHMENT;
+				format = TextureFormat::DEPTH_COMPONENT;
 				break;
 			case FramebufferAttachmentType::Stencil:
 				binding = GL_STENCIL_ATTACHMENT;
+				format = TextureFormat::STENCIL_INDEX;
 				break;
 			case FramebufferAttachmentType::DepthStencil:
 				binding = GL_DEPTH_STENCIL_ATTACHMENT;
+				format = TextureFormat::DEPTH_STENCIL;
 				break;
 			}
 			switch (createInfo.dimension)
 			{
 			case TextureDimension::Texture1D:
 			{
-				texture = new Texture1D(info, nullptr, TextureFormat::RGBA, TextureFormatComponent::BYTE);
+				texture = Texture1D::Create(info, nullptr, format, TextureFormatComponent::BYTE);
 				glBindTexture(GL_TEXTURE_1D, texture->Handle());
 				glFramebufferTexture1D(GL_FRAMEBUFFER, binding, GL_TEXTURE_1D, texture->Handle(), att.level);
 				break;
 			}
 			case TextureDimension::Texture2D:
 			{
-				texture = new Texture2D(info, nullptr, TextureFormat::RGBA, TextureFormatComponent::BYTE);
+				texture = Texture2D::Create(info, nullptr, format, TextureFormatComponent::BYTE);
 				glBindTexture(GL_TEXTURE_2D, texture->Handle());
 				glFramebufferTexture2D(GL_FRAMEBUFFER, binding, GL_TEXTURE_2D, texture->Handle(), att.level);
 				break;
 			}
 			case TextureDimension::Texture3D:
 			{
-				texture = new Texture3D(info, nullptr, TextureFormat::RGBA, TextureFormatComponent::BYTE);
+				texture = Texture3D::Create(info, nullptr, format, TextureFormatComponent::BYTE);
 				glBindTexture(GL_TEXTURE_3D, texture->Handle());
 				glFramebufferTexture3D(GL_FRAMEBUFFER, binding, GL_TEXTURE_3D, texture->Handle(), att.level, att.layer);
 				break;
@@ -87,6 +91,7 @@ namespace sugoma::graphics
 		if (m_handle)
 			glDeleteFramebuffers(1, &m_handle);
 	}
+	Ref<Framebuffer> Framebuffer::Create(const FramebufferSpecification& spec) { return Resources::Create<Framebuffer>(spec); }
 	void Framebuffer::Resize(uint32_t width, uint32_t height, uint32_t depth)
 	{
 		for (auto& attachment : m_attachments)

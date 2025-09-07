@@ -15,6 +15,7 @@ namespace sugoma::graphics
 		if (b == m_handle)
 			glBindBufferBase(GL_UNIFORM_BUFFER, m_bind_point, 0);
 	}
+	Ref<UniformBuffer> UniformBuffer::Create(size_t size, BufferUsage usage, uint32_t bind_point) { return Resources::Create<UniformBuffer>(size, usage, bind_point); }
 	uint32_t UniformBuffer::BindPoint() const { return m_bind_point; }
 	void UniformBuffer::Use(uint32_t bind)
 	{

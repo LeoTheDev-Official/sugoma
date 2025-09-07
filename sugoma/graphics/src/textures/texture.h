@@ -11,6 +11,12 @@ namespace sugoma::graphics
 		Texture3D,
 		TextureCube
 	};
+	enum class TextureAccess 
+	{
+		ReadOnly,
+		WriteOnly,
+		ReadWrite
+	};
 	struct TextureCreateInfo 
 	{
 		uint32_t width, height, depth = 1, layers = 1, border = 0;

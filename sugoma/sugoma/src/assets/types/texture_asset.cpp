@@ -2,6 +2,7 @@
 #include "texture_asset.h"
 
 #include "textures/texture2D.h"
+#include "textures/texture_cube.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -162,6 +163,7 @@ namespace sugoma
 		}
 
 		texture_metadata t{};
+		t.dimension = tmeta.dimension;
 		t.width = width;
 		t.height = height;
 		t.magFilter = tmeta.magFilter;
@@ -213,6 +215,11 @@ namespace sugoma
 		case TextureDimension::Texture3D:
 			break;
 		case TextureDimension::TextureCube:
+			Ref<Texture2D> staging_texture = Texture2D::Create(info, (void**)buff, comp_formats[cc], t.component);
+			info.width = staging_texture->Height() / 2;
+			info.height = info.width;
+			result = TextureCube::FromHDRI(staging_texture, info);
+			Resources::Destroy(staging_texture);
 			break;
 		}
 		return result;

@@ -78,6 +78,7 @@
     <ClInclude Include="src\utility\type_utility.h">
       <Filter>utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\algorithm.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\debug\logger.cpp">
@@ -125,5 +126,6 @@
     <ClCompile Include="src\utility\type_utility.cpp">
       <Filter>utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\algorithm.cpp" />
   </ItemGroup>
 </Project>

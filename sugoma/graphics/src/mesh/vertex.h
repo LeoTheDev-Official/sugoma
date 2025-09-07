@@ -33,8 +33,9 @@ namespace sugoma::graphics
 	{
 		glm::vec3 position;
 		glm::vec2 uv;
-		glm::vec3 normal;
 		glm::vec4 color;
+		glm::vec3 normal;
+		glm::vec3 tangent;
 		static const VertexLayout& Layout()
 		{
 			static VertexLayout layout =
@@ -42,8 +43,9 @@ namespace sugoma::graphics
 				{
 					{"v_position", VertexLayoutComponentType::FLOAT, 3},
 					{"v_uv", VertexLayoutComponentType::FLOAT, 2},
+					{"v_color", VertexLayoutComponentType::FLOAT, 4},
 					{"v_normal", VertexLayoutComponentType::FLOAT, 3, true},
-					{"v_color", VertexLayoutComponentType::FLOAT, 4}
+					{"v_tangent", VertexLayoutComponentType::FLOAT, 3, true}
 				}
 			};
 			return layout;

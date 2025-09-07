@@ -15,6 +15,7 @@ namespace sugoma::graphics
 		if (b == m_handle)
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, m_bind_point, 0);
 	}
+	Ref<ShaderStorageBuffer> ShaderStorageBuffer::Create(size_t size, BufferUsage usage, uint32_t bind_point) { return Resources::Create<ShaderStorageBuffer>(size, usage, bind_point); }
 	uint32_t ShaderStorageBuffer::BindPoint() const { return m_bind_point; }
 	void ShaderStorageBuffer::Use(uint32_t bind)
 	{

@@ -5,7 +5,7 @@ namespace sugoma::graphics
 	ComputeStage::ComputeStage(const PipelineStageCreateInfo& info):
 		PipelineStage(info)
 	{
-		m_handle = GLUtility::CompileShader(info.source, GL_COMPUTE_SHADER);
+		m_handle = GLUtility::CompileShader(info.source, GL_COMPUTE_SHADER, info.defines);
 	}
 	void ComputeStage::Invalidate(GLHandle program)
 	{
@@ -15,9 +15,13 @@ namespace sugoma::graphics
 		Pipeline(info)
 	{
 		m_kind = PipelineKind::Compute;
-		for (auto& stageInfo : info.stages)
-			if (stageInfo.stage & PipelineStageFlagBits::ComputeStageBit)
-				m_stages.push_back(new ComputeStage(stageInfo));
+		for (auto& s : info.stages) 
+		{
+			PipelineStageCreateInfo stage = s;
+			stage.defines.insert(stage.defines.end(), info.defines.begin(), info.defines.end());
+			if (stage.stage & PipelineStageFlagBits::ComputeStageBit)
+				m_stages.push_back(new ComputeStage(stage));
+		}
 		m_handle = glCreateProgram();
 		for (auto& stage : m_stages) glAttachShader(m_handle, stage->Handle());
 		GLUtility::LinkProgram(m_handle);

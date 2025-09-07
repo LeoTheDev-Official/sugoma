@@ -270,11 +270,15 @@
     <ClInclude Include="src\assets\vendor\ufbx.h" />
     <ClInclude Include="src\modules\debug_module.h" />
     <ClInclude Include="src\modules\runtime_module.h" />
+    <ClInclude Include="src\renderer\camera.h" />
+    <ClInclude Include="src\renderer\drags\drags.h" />
+    <ClInclude Include="src\renderer\renderer.h" />
     <ClInclude Include="src\systems\input_system.h" />
     <ClInclude Include="src\systems\time.h" />
     <ClInclude Include="src\tools\asset_packer.h" />
     <ClInclude Include="src\tools\audio_debug.h" />
     <ClInclude Include="src\utility\saf_utility.h" />
+    <ClInclude Include="src\utility\sush_utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\assets\asset.cpp" />
@@ -285,11 +289,17 @@
     <ClCompile Include="src\assets\vendor\ufbx.cpp" />
     <ClCompile Include="src\modules\debug_module.cpp" />
     <ClCompile Include="src\modules\runtime_module.cpp" />
+    <ClCompile Include="src\renderer\camera.cpp" />
+    <ClCompile Include="src\renderer\drags\drags.cpp" />
+    <ClCompile Include="src\renderer\renderer.cpp">
+      <ObjectFileName>$(IntDir)\renderer1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\systems\input_system.cpp" />
     <ClCompile Include="src\systems\time.cpp" />
     <ClCompile Include="src\tools\asset_packer.cpp" />
     <ClCompile Include="src\tools\audio_debug.cpp" />
     <ClCompile Include="src\utility\saf_utility.cpp" />
+    <ClCompile Include="src\utility\sush_utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\core\core.vcxproj">

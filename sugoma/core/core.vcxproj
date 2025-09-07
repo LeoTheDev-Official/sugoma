@@ -272,6 +272,7 @@
     <ClInclude Include="src\events\event_dispatcher.h" />
     <ClInclude Include="src\events\input_events.h" />
     <ClInclude Include="src\events\window_events.h" />
+    <ClInclude Include="src\math\algorithm.h" />
     <ClInclude Include="src\math\transform.h" />
     <ClInclude Include="src\memory\buffer.h" />
     <ClInclude Include="src\memory\sugoma_allocator.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="src\events\event_dispatcher.cpp" />
     <ClCompile Include="src\events\input_events.cpp" />
     <ClCompile Include="src\events\window_events.cpp" />
+    <ClCompile Include="src\math\algorithm.cpp" />
     <ClCompile Include="src\math\transform.cpp" />
     <ClCompile Include="src\memory\buffer.cpp" />
     <ClCompile Include="src\memory\sugoma_memory.cpp" />

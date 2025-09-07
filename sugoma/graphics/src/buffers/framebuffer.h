@@ -25,7 +25,7 @@ namespace sugoma::graphics
 	};
 	struct FramebufferAttachment 
 	{
-		Texture* texture;
+		Ref<Texture> texture;
 		FramebufferAttachmentInfo info;
 	};
 	struct FramebufferSpecification 
@@ -41,6 +41,9 @@ namespace sugoma::graphics
 		Framebuffer() = delete;
 		Framebuffer(const FramebufferSpecification& createInfo);
 		~Framebuffer();
+
+		static Ref<Framebuffer> Create(const FramebufferSpecification& spec);
+
 		void Resize(uint32_t width, uint32_t height, uint32_t depth);
 		const FramebufferSpecification& Specification() const;
 		GLHandle Handle() const;

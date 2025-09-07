@@ -276,6 +276,7 @@ namespace sugoma
 	{
 		ImGui::TableNextRow();
 		ImGui::TableSetColumnIndex(0);
+		ImGui::PushID(&entry);
 		if (ImGui::ArrowButton(entry.name.c_str(), entry.opened ? ImGuiDir_Down : ImGuiDir_Right)) entry.opened = !entry.opened;
 		ImGui::SameLine();
 		ImGui::Text(entry.name.c_str());
@@ -289,9 +290,11 @@ namespace sugoma
 			}
 			ImGui::Unindent(5);
 		}
+		ImGui::PopID();
 	}
 	void AssetPacker::DrawEntry(APFileEntry& entry)
 	{
+		ImGui::PushID(&entry);
 		ImGui::TableNextRow();
 		bool selected = &entry == m_selected;
 		if (!entry.included) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.7f, 0.7f, 1.0f));
@@ -300,6 +303,7 @@ namespace sugoma
 		ImGui::TableSetColumnIndex(1);
 		ImGui::Text(entry.assetTypeName);
 		if (!entry.included) ImGui::PopStyleColor();
+		ImGui::PopID();
 	}
 	void AssetPacker::SetSelectedEntry(APFileEntry& entry)
 	{
@@ -357,6 +361,8 @@ namespace sugoma
 		case (AssetType)AssetTypes::Texture:
 		{
 			Ref<Texture> texture = m_preview;
+			TextureMetadata* meta = reinterpret_cast<TextureMetadata*>(m_selected->metadata);
+			if (meta->dimension != TextureDimension::Texture2D) return;
 			ImVec2 avail = ImGui::GetContentRegionAvail();
 			float avail_aspect = avail.x / avail.y;
 			float tex_aspect = (float)texture->Width() / texture->Height();

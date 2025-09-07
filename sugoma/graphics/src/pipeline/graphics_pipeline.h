@@ -11,11 +11,6 @@ namespace sugoma::graphics
 		PipelineAttributeType type;
 		int16_t size;
 	};
-	struct PropertyBinding 
-	{
-		std::string name;
-		std::string internalName;
-	};
 	class VertexStage : public PipelineStage
 	{
 	public:
@@ -25,14 +20,19 @@ namespace sugoma::graphics
 	private:
 		std::vector<PropertyInfo> m_input_layout;
 	};
+	class GeometryStage : public PipelineStage
+	{
+	public:
+		GeometryStage() = delete;
+		GeometryStage(const PipelineStageCreateInfo& info);
+		void Invalidate(GLHandle program) override;
+	};
 	class FragmentStage : public PipelineStage 
 	{
 	public:
 		FragmentStage() = delete;
 		FragmentStage(const PipelineStageCreateInfo& info);
 		void Invalidate(GLHandle program) override;
-	private:
-
 	};
 
 	class GraphicsPipeline : public Pipeline 
@@ -44,9 +44,5 @@ namespace sugoma::graphics
 		void Invalidate() override;
 		
 		static Ref<GraphicsPipeline> Create(const PipelineCreateInfo& infoa, const std::vector<std::string>& publicParams = {});
-	public:
-		const std::vector<PropertyBinding>& PublicParams() const { return m_publicParams; }
-	private:
-		std::vector<PropertyBinding> m_publicParams;
 	};
 }

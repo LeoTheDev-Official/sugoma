@@ -1,8 +1,40 @@
 #include "mesh_asset.h"
-#include "assets/vendor/ufbx.h"
+#include <fstream>
+#include <filesystem>
+#include <cstdio>
 #include "debug/logger.h"
 #include "math/transform.h"
 #include "glm/gtx/quaternion.hpp"
+struct obj_vertex_pair 
+{ 
+	int p; int u; int n; 
+	bool operator==(const obj_vertex_pair& other) const
+	{
+		return p == other.p &&
+			u == other.u &&
+			n == other.n;
+	}
+};
+
+namespace std
+{
+	template <>
+	struct hash<obj_vertex_pair>
+	{
+		std::size_t operator()(const obj_vertex_pair& v) const noexcept
+		{
+			std::size_t h1 = std::hash<int>{}(v.p);
+			std::size_t h2 = std::hash<int>{}(v.u);
+			std::size_t h3 = std::hash<int>{}(v.n);
+
+			std::size_t seed = h1;
+			seed ^= h2 + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+			seed ^= h3 + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+
+			return seed;
+		}
+	};
+}
 namespace sugoma 
 {
 #pragma pack (1)
@@ -18,6 +50,7 @@ namespace sugoma
 		uint32_t offset, size;
 		Transform transform;
 	};
+	/*
 	glm::vec2 to_vec_2(ufbx_vec2 v) { return { (float)v.x, (float)v.y }; }
 	glm::vec3 to_vec_3(ufbx_vec3 v) { return { (float)v.x, (float)v.y, (float)v.z }; }
 	glm::vec4 to_vec_4(ufbx_vec4 v) { return { (float)v.x, (float)v.y, (float)v.z, (float)v.w }; }
@@ -99,6 +132,129 @@ namespace sugoma
 		ufbx_free_scene(scene);
 		return b;
 	}
+	*/
+	Buffer pack_obj(const std::filesystem::path& path, const AssetMetadata* meta) 
+	{
+		FILE* file = fopen(path.string().c_str(), "r");
+		if (!file) return Buffer();
+
+		char prefix[16] = { 0 };
+
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec2> uvs;
+		std::vector<glm::vec3> normals;
+
+		std::vector<obj_vertex_pair> pairs;
+		std::unordered_map<obj_vertex_pair, uint32_t> pair_indices;
+
+		std::vector<uint32_t> indices;
+
+		std::vector<submesh_data> submeshes;
+		uint32_t index_cursor = 0;
+		uint32_t index_count = 0;
+		char name[32] = { 0 };
+		while(fscanf_s(file, "%15s", prefix, (unsigned)_countof(prefix)) != EOF) 
+		{
+			if(strcmp(prefix, "#") == 0) 
+			{
+				fscanf_s(file, "%*[^\n]"); // skip the rest of the line
+				continue;
+			}
+			if(strcmp(prefix, "o") == 0) 
+			{
+				if (index_cursor) 
+				{
+					submesh_data submesh = submeshes.emplace_back();
+					strcpy_s(submesh.name, name);
+					submesh.offset = index_cursor - index_count;
+					submesh.size = index_count;
+					submesh.transform = Transform();
+					index_count = 0;
+				}
+				fscanf_s(file, "%31s", name, (unsigned)_countof(name));
+				continue;
+			}
+			if (strcmp(prefix, "v") == 0) 
+			{
+				glm::vec3& pos = positions.emplace_back();
+				fscanf_s(file, "%f %f %f", &pos.x, &pos.y, &pos.z);
+				continue;
+			} 
+			if (strcmp(prefix, "vt") == 0)
+			{
+				glm::vec2& uv = uvs.emplace_back();
+				fscanf_s(file, "%f %f", &uv.x, &uv.y);
+				continue;
+			}
+			if (strcmp(prefix, "vn") == 0)
+			{
+				glm::vec3& normal = normals.emplace_back();
+				fscanf_s(file, "%f %f %f", &normal.x, &normal.y, &normal.z);
+				continue;
+			}
+			if (strcmp(prefix, "f") == 0) 
+			{
+				obj_vertex_pair p;
+				for (int i = 0; i < 3; ++i) {
+					fscanf_s(file, "%d/%d/%d", &p.p, &p.u, &p.n);
+					--p.p; --p.u; --p.n;
+					//if(pair_indices.find(p) == pair_indices.end()) 
+					//{
+					//	pair_indices[p] = pairs.size();
+					//	indices.push_back(pairs.size());
+					//	pairs.push_back(p);
+					//}
+					//else 
+					//{
+					//	indices.push_back(pair_indices[p]);
+					//}
+					indices.push_back(pairs.size());
+					pairs.push_back(p);
+					++index_count;
+					++index_cursor;
+				}
+			}
+		}
+		std::vector<Vertex> vertices(pairs.size());
+		for(uint32_t i = 0; i < pairs.size(); ++i) 
+		{
+			Vertex& v = vertices[i];
+			obj_vertex_pair& p = pairs[i];
+			v.position = positions[p.p];
+			v.uv = uvs[p.u];
+			v.normal = normals[p.n];
+			v.color = glm::vec4(1.0f);
+		}
+
+		mesh_metadata mm{};
+		mm.indexCount = indices.size();
+		mm.vertexCount = vertices.size();
+		mm.submeshCount = submeshes.size();
+
+		size_t vertex_size = sizeof(Vertex) * vertices.size();
+		size_t index_size = sizeof(uint32_t) * indices.size();
+		size_t submesh_size = sizeof(submesh_data) * submeshes.size();
+		size_t buffer_size = sizeof(mm) + vertex_size + index_size + submesh_size;
+
+		Buffer b(buffer_size);
+		b.Write(&mm, sizeof(mm));
+		b.Write(vertices.data(), vertex_size);
+		b.Write(indices.data(), index_size);
+		b.Write(&submeshes, submesh_size);
+
+		sugoma_log("Packed OBJ file: " << path << " | Vertex Count: " << vertices.size() << " | Index Count: " << indices.size() << " | Submesh Count: " << submeshes.size());
+		for(auto& submesh : submeshes) 
+			sugoma_log("Submesh: " << submesh.name << " | Offset: " << submesh.offset << " | Size: " << submesh.size);
+
+		return b;
+	}
+	Buffer AssetImpl<Mesh>::PackAssetFile(const std::filesystem::path& path, const AssetMetadata* meta)
+	{
+		auto ext = path.extension().string();
+		if(ext == ".obj") 
+			return pack_obj(path, meta);
+		return Buffer();
+	}
 	Buffer AssetImpl<Mesh>::PackAsset(const Asset& asset, AssetMetadata* meta) 
 	{
 		return Buffer();
@@ -125,13 +281,13 @@ namespace sugoma
 			s.size = sd.size;
 			s.transform = sd.transform;
 		}
-		return Resources::Create<Mesh>(vertices, indices, false, subMesh);
+		return Mesh::Create(vertices, indices, false, subMesh, true);
 	}
 	AssetMetadata* AssetImpl<Mesh>::CreateMetadata() { return new MeshMetadata(); }
 
 	const std::vector<std::string>& AssetImpl<Mesh>::Extensions()
 	{
-		static std::vector<std::string> extensions = { ".fbx" };
+		static std::vector<std::string> extensions = { ".obj" };
 		return extensions;
 	}
 }

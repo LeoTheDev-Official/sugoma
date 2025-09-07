@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <vector>
 namespace sugoma::graphics 
 {
 	using GLHandle = uint32_t;
@@ -104,11 +105,40 @@ namespace sugoma::graphics
 		CLAMP_TO_EDGE = 0x812F,
 		CLAMP_TO_BORDER = 0x812D
 	};
+	enum class PrimitiveType
+	{
+		POINTS = 0x0000,
+		LINES = 0x0001,
+		LINE_LOOP = 0x0002,
+		LINE_STRIP = 0x0003,
+		TRIANGLES = 0x0004,
+		TRIANGLE_STRIP = 0x0005,
+		TRIANGLE_FAN = 0x0006
+	};
+	enum class MemoryBarrierBits : uint32_t
+	{
+		VertexAttribArray = 0x00000001,
+		ElementArray = 0x00000002,
+		Uniform = 0x00000004,
+		TextureFetch = 0x00000008,
+		ShaderImageAccess = 0x00000020,
+		Command = 0x00000040,
+		PixelBuffer = 0x00000080,
+		TextureUpdate = 0x00000100,
+		BufferUpdate = 0x00000200,
+		Framebuffer = 0x00000400,
+		TransformFeedback = 0x00000800,
+		AtomicCounter = 0x00001000,
+		ShaderStorage = 0x2000,
+		QueryBuffer = 0x00008000,
+		ClientMappedBuffer = 0x00004000,
 
+		All = 0xFFFFFFFF
+	};
 	class GLUtility 
 	{
 	public:
-		static GLHandle CompileShader(const std::string& src, GLEnum kind);
+		static GLHandle CompileShader(const std::string& src, GLEnum kind, const std::vector<std::string_view>& defines = {}, const char* version = "460");
 		static bool LinkProgram(GLHandle handle);
 	};
 	

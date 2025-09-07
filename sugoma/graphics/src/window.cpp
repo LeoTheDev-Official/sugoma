@@ -133,6 +133,8 @@ namespace sugoma::graphics
 #endif
 		if (createInfo.position.x != -1) glfwSetWindowPos(m_window_handle, createInfo.position.x, createInfo.position.y);
 
+		m_device.Fetch();
+
 		glfwSetWindowCloseCallback(m_window_handle, [](GLFWwindow* window)
 			{
 				auto win = static_cast<Window*>(glfwGetWindowUserPointer(window));
@@ -216,6 +218,7 @@ namespace sugoma::graphics
 	void Window::SetTitle(const char* title) { glfwSetWindowTitle(m_window_handle, title); }
 	void Window::SetSize(uint32_t width, uint32_t height) { glfwSetWindowSize(m_window_handle, width, height); }
 	void Window::SetPosition(uint32_t x, uint32_t y) { glfwSetWindowPos(m_window_handle, x, y); }
+	void Window::SetEventCallback(WindowEventCallbackFunc func) { m_event_callback = func; }
 	glm::uvec2 Window::GetSize() const 
 	{ 
 		int w, h;
@@ -229,6 +232,7 @@ namespace sugoma::graphics
 		return { x, y };
 	}
 	GLFWwindow* Window::GetHandle() const { return m_window_handle; }
+	const GraphicsDevice& Window::Device() const { return m_device; }
 	void Window::PollEvents() { glfwPollEvents(); }
 	void Window::Clear(glm::vec4 color)
 	{
@@ -238,7 +242,7 @@ namespace sugoma::graphics
 		glClearColor(color.r, color.g, color.b, color.a);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
-	void Window::Data(Framebuffer* framebuffer, uint32_t attachment, GLEnum filter)
+	void Window::Data(const Framebuffer* framebuffer, uint32_t attachment, GLEnum filter)
 	{
 		glm::uvec2 w_size = GetSize();
 		auto spec = framebuffer->Specification();
@@ -270,9 +274,10 @@ namespace sugoma::graphics
 		glBlitFramebuffer(0, 0, f_size.x, f_size.y, dst_offset.x, dst_offset.y, dst_offset.x + dst_size.x, dst_offset.y + dst_size.y, GL_COLOR_BUFFER_BIT, filter);
 	}
 	void Window::Present() { glfwSwapBuffers(m_window_handle); }
+	void Window::SetCursorLock(bool locked) { glfwSetInputMode(m_window_handle, GLFW_CURSOR, locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
 	void Window::OnEvent(Event& evt)
 	{
-		if (event_callback)
-			event_callback(evt);
+		if (m_event_callback)
+			m_event_callback(evt);
 	}
 }

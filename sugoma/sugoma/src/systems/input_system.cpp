@@ -3,6 +3,8 @@
 #include "events/event_dispatcher.h"
 #include "events/input_events.h"
 
+#include "window.h"
+
 namespace sugoma 
 {
 	using namespace core;
@@ -13,11 +15,11 @@ namespace sugoma
 		pressed_this_frame = (1 << 1),
 		released_this_frame = (1 << 2)
 	};
-	static uint8_t __key_states[0xFF] = {none};
+	static uint8_t __key_states[0x200] = {none};
 	static uint8_t __button_states[0xF] = {none};
 
 	static glm::ivec2 __scroll, __mouse_pos, __mouse_delta;
-
+	static bool __cursor_locked = false;
 
 	bool InputSystem::GetKey(KeyCode code) { return __key_states[(KeyID)code] & pressed; }
 
@@ -69,7 +71,12 @@ namespace sugoma
 		__mouse_pos = evt.GetPosition();
 		return false;
 	}
-
+	void InputSystem::SetCursorLockState(bool lock) 
+	{
+		graphics::GraphicsContext()->SetCursorLock(lock);
+		__cursor_locked = lock;
+	}
+	bool InputSystem::CursorLockState() { return __cursor_locked; }
 
 
 

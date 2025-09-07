@@ -150,6 +150,9 @@ namespace sugoma
         static glm::vec2 Scroll();
         static glm::vec2 MousePosition();
         static glm::vec2 MouseDelta();
+
+        static void SetCursorLockState(bool lock);
+		static bool CursorLockState();
     public:
         static bool SendEvent(Event& event);
 

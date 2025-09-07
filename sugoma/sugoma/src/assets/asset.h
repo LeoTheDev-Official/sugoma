@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <functional>
 #include "resources/resource.h"
-#include "memory/buffer.h"
+#include "memory/Buffer.h"
 #include "utility/guid.h"
 namespace sugoma 
 {
@@ -38,16 +38,16 @@ namespace sugoma
 	public:
 		static inline constexpr const char* Name() = 0;
 		static inline constexpr AssetType Type() = 0;
-		static Buffer PackAssetFile(const std::filesystem::path& path, const AssetMetadata* meta) = 0;
-		static Buffer PackAsset(const Asset& asset, AssetMetadata* meta) = 0;
-		static Ref<Resource> UnpackAsset(Buffer buffer) = 0;
+		static core::Buffer PackAssetFile(const std::filesystem::path& path, const AssetMetadata* meta) = 0;
+		static core::Buffer PackAsset(const Asset& asset, AssetMetadata* meta) = 0;
+		static Ref<Resource> UnpackAsset(core::Buffer buffer) = 0;
 		static const std::vector<std::string>& Extensions() = 0;
 		static AssetMetadata* CreateMetadata() = 0;
 
 	};
-	using AssetPackFileFunc = std::function<Buffer(const std::filesystem::path&, const AssetMetadata*)>;
-	using AssetPackFunc = std::function<Buffer(const Asset&, AssetMetadata*)>;
-	using AssetUnpackFunc = std::function<Ref<Resource>(Buffer)>;
+	using AssetPackFileFunc = std::function<core::Buffer(const std::filesystem::path&, const AssetMetadata*)>;
+	using AssetPackFunc = std::function<core::Buffer(const Asset&, AssetMetadata*)>;
+	using AssetUnpackFunc = std::function<Ref<Resource>(core::Buffer)>;
 	using AssetMetadataFunc = std::function<AssetMetadata*()>;
 	using AssetExtensionsFunc = std::function<const std::vector<std::string>&()>;
 	struct AssetImplementationInfo 
@@ -105,6 +105,8 @@ namespace sugoma
 		template<typename B>
 		operator AssetRef<B>() { return AssetRef<B>(m_guid); }
 		operator Ref<T>() { return Assets::GetAssetResourceByGUID(m_guid); }
+		template<typename B> operator Ref<B>() { return Assets::GetAssetResourceByGUID(m_guid); }
+		template<typename B> operator const Ref<B>() const { return Assets::GetAssetResourceByGUID(m_guid); }
 	private:
 		GUID m_guid{};
 	};

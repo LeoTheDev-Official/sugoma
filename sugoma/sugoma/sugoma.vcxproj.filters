@@ -13,6 +13,12 @@
     <Filter Include="modules">
       <UniqueIdentifier>{FEAC8BD4-6A8C-0A70-73A4-9546DF0271D1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer">
+      <UniqueIdentifier>{9C6AA017-8837-FB22-B150-E9CA9D7C30B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\drags">
+      <UniqueIdentifier>{1C25394A-08F3-2C50-F186-9D76DDF308B5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="systems">
       <UniqueIdentifier>{3D76CBBA-A955-4A56-B26D-D52C1ECCB0B7}</UniqueIdentifier>
     </Filter>
@@ -48,6 +54,12 @@
     <ClInclude Include="src\modules\runtime_module.h">
       <Filter>modules</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\camera.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\renderer.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\systems\input_system.h">
       <Filter>systems</Filter>
     </ClInclude>
@@ -63,6 +75,8 @@
     <ClInclude Include="src\utility\saf_utility.h">
       <Filter>utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\drags\drags.h" />
+    <ClInclude Include="src\utility\sush_utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\assets\asset.cpp">
@@ -89,6 +103,12 @@
     <ClCompile Include="src\modules\runtime_module.cpp">
       <Filter>modules</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\camera.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\renderer.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\systems\input_system.cpp">
       <Filter>systems</Filter>
     </ClCompile>
@@ -104,5 +124,7 @@
     <ClCompile Include="src\utility\saf_utility.cpp">
       <Filter>utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\drags\drags.cpp" />
+    <ClCompile Include="src\utility\sush_utility.cpp" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,8 @@
 #include "textures/texture2D.h"
 #include "utility/file_utility.h"
 
+#include <iostream>
+
 namespace sugoma::graphics 
 {
 	GraphicsModule::GraphicsModule() : Module("GraphicsModule")
@@ -21,6 +23,7 @@ namespace sugoma::graphics
 	{
 
 	}
+
 	void GraphicsModule::OnAttach()
 	{
 		auto& einfo = Context()->Info();
@@ -34,15 +37,14 @@ namespace sugoma::graphics
 		
 		m_window = new Window(createInfo);
 		m_window->MakeContextCurrent();
-		m_window->event_callback = std::bind(&GraphicsModule::EventCallback, this, std::placeholders::_1);
-
-		const GLubyte* renderer = glGetString(GL_RENDERER);
-		const GLubyte* vendor = glGetString(GL_VENDOR);
-		const GLubyte* version = glGetString(GL_VERSION);
+		m_window->SetEventCallback(std::bind(&GraphicsModule::EventCallback, this, std::placeholders::_1));
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-		sugoma_info("OpenGL Initialized. Device : " << renderer << " " << vendor << " " << version);
+		const GraphicsDevice& device = m_window->Device();
+		
+		sugoma_info("Graphics device selected:\n\tVendor : " << device.Vendor() << "\n\tRenderer : " << device.Renderer() << "\n\tGLSLVersion : " << device.GLSLVersion());
+
 	}
 	void GraphicsModule::OnDetach()
 	{

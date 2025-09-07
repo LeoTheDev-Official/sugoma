@@ -5,6 +5,50 @@
 #include "utility/file_utility.h"
 namespace sugoma::graphics
 {
+	const char* __hdri_to_cube_compute_source = R"(
+layout (local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0) uniform sampler2D equirectHDR;
+layout(rgba16f, binding = 1) writeonly uniform imageCube environmentMap;
+
+const float PI = 3.14159265359;
+
+vec3 SampleDirectionFromUV(uint face, ivec2 uv, ivec2 size) {
+    vec2 uvN = (vec2(uv) + 0.5) / vec2(size); // Normalize UV [0,1]
+    uvN = uvN * 2.0 - 1.0;                    // [-1,1]
+
+    vec3 dir = vec3(0.0);
+
+    if (face == 0) dir = normalize(vec3( 1.0, -uvN.y, -uvN.x)); // +X
+    if (face == 1) dir = normalize(vec3(-1.0, -uvN.y,  uvN.x)); // -X
+    if (face == 2) dir = normalize(vec3( uvN.x,  1.0,  uvN.y)); // +Y
+    if (face == 3) dir = normalize(vec3( uvN.x, -1.0, -uvN.y)); // -Y
+    if (face == 4) dir = normalize(vec3( uvN.x, -uvN.y,  1.0)); // +Z
+    if (face == 5) dir = normalize(vec3(-uvN.x, -uvN.y, -1.0)); // -Z
+
+    return dir;
+}
+
+void main() {
+    ivec2 size = imageSize(environmentMap).xy;
+    ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
+
+    if (texelCoord.x >= size.x || texelCoord.y >= size.y)
+        return;
+
+    for (uint face = 0; face < 6; ++face) {
+        vec3 dir = SampleDirectionFromUV(face, texelCoord, size);
+
+        float theta = acos(dir.y);
+        float phi = atan(dir.z, dir.x) + PI;
+        vec2 uv = vec2(phi / (2.0 * PI), theta / PI);
+
+        vec3 color = texture(equirectHDR, uv).rgb;
+
+        imageStore(environmentMap, ivec3(texelCoord, face), vec4(color, 1.0));
+    }
+}
+)";
 	TextureCube::TextureCube(const TextureCreateInfo& info, void** buffers, TextureFormat buffer_format, TextureFormatComponent component):
 		Texture(info)
 	{
@@ -38,7 +82,7 @@ namespace sugoma::graphics
 		PipelineCreateInfo info{};
 		PipelineStageCreateInfo& sinfo = info.stages.emplace_back();
 		sinfo.stage = PipelineStageFlagBits::ComputeStageBit;
-		sinfo.source = FileUtility::ReadStringFile("data/hdri_to_cube.shader");
+		sinfo.source = __hdri_to_cube_compute_source;
 		return new ComputePipeline(info);
 	}
 	Ref<TextureCube> TextureCube::FromHDRI(Ref<Texture2D> hdri, const TextureCreateInfo& info)

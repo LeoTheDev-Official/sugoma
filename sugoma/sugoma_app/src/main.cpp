@@ -12,6 +12,12 @@ using namespace sugoma::audio;
 using namespace sugoma::core;
 using namespace sugoma;
 
+extern "C"
+{
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 0x00000001;
+}
+
 int main()
 {
 	EngineCreateInfo info{};

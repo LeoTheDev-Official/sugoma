@@ -17,9 +17,12 @@ namespace sugoma::audio
 	}
 	void AudioModule::OnAttach()
 	{
+		
 	}
 	void AudioModule::OnDetach()
 	{
+		delete s_audioEngine;
+		s_audioEngine = nullptr;
 	}
 	bool AudioModule::Validate()
 	{
